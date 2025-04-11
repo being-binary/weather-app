@@ -15,7 +15,6 @@ const Home = () => {
                 `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
             );
             const data = await res.json();
-            console.log(data)
             if (data.cod === '404') {
                 toastinfo(data.message)
                 return
