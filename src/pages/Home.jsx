@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { WiThermometer, WiHumidity, WiBarometer, WiStrongWind } from "react-icons/wi";
 import { BsThermometerSun, BsThermometerSnow } from "react-icons/bs";
+import { toastinfo } from '../components/Toast';
+import { ToastContainer } from 'react-toastify';
 
 
 const Home = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [city, setCity] = useState('Lucknow');
 
-    const getWeather = async (cityName = 'Lucknow') => {
+    const getWeather = async (cityName) => {
         try {
             const res = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
             );
             const data = await res.json();
-            setWeatherData(data);
+            console.log(data)
+            if (data.cod === '404') {
+                toastinfo(data.message)
+                return
+            }else{
+                setWeatherData(data);
+            }
         } catch (err) {
             console.error('Error fetching weather data:', err);
         }
@@ -46,7 +54,7 @@ const Home = () => {
     };
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-br from-blue-400 to-blue-700 text-white flex flex-col items-center p-6">
+        <div className="w-full min-h-screen bg-gradient-to-br from-blue-400 to-blue-700 text-white flex flex-col items-center justify-center p-6">
             <form onSubmit={handleSearch} className="mb-6 w-full max-w-md flex gap-2">
                 <input
                     type="text"
@@ -132,6 +140,7 @@ const Home = () => {
                     </div>
                 </div>
             )}
+            <ToastContainer />
         </div>
     );
 };
