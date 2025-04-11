@@ -1,4 +1,4 @@
-import { toast , Slide} from 'react-toastify';
+import { toast , Flip} from 'react-toastify';
 
 
 export const toastinfo = (message) => {
@@ -10,6 +10,6 @@ export const toastinfo = (message) => {
         pauseOnHover: true,
         draggable: true,
         theme: "light",
-        transition: Slide,
+        transition: Flip,
     })
 }
