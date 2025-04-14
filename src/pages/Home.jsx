@@ -8,7 +8,7 @@ import SearchBar from '../components/SearchBar';
 
 const Home = () => {
     const [weatherData, setWeatherData] = useState(null);
-    const [city, setCity] = useState('Lucknow');
+    const [city, setCity] = useState('Lucknow,Uttar Pradesh');
 
     const getWeather = async () => {
         try {

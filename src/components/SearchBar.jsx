@@ -25,7 +25,7 @@ const SearchBar = ({ value }) => {
     };
 
     const handleSelect = (selectedCity) => {
-        setCity(`${selectedCity.name}`);
+        setCity(`${selectedCity.name}, ${selectedCity.state}`);
         setShowDropdown(false);
         setResultCity([]);
     };
