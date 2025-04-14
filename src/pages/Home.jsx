@@ -3,16 +3,17 @@ import { WiThermometer, WiHumidity, WiBarometer, WiStrongWind } from "react-icon
 import { BsThermometerSun, BsThermometerSnow } from "react-icons/bs";
 import { toastinfo } from '../components/Toast';
 import { ToastContainer } from 'react-toastify';
+import SearchBar from '../components/SearchBar';
 
 
 const Home = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [city, setCity] = useState('Lucknow');
 
-    const getWeather = async (cityName) => {
+    const getWeather = async () => {
         try {
             const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_API_KEY}&units=metric`
             );
             const data = await res.json();
             if (data.cod === '404') {
@@ -27,14 +28,10 @@ const Home = () => {
     };
 
     useEffect(() => {
-        getWeather(city);
+        getWeather();
     }, []);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        getWeather(city);
-    };
-
+ 
     const getEmoji = (main) => {
         switch (main) {
             case 'Clouds':
@@ -54,19 +51,7 @@ const Home = () => {
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-br from-blue-400 to-blue-700 text-white flex flex-col items-center justify-center p-6">
-            <form onSubmit={handleSearch} className="mb-6 w-full max-w-md flex gap-2">
-                <input
-                    type="text"
-                    placeholder="Enter city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className="flex-1 p-3 rounded text-white font-semibold outline-none border-1 border-white"
-                />
-                <button className="bg-white text-blue-600 px-4 py-2 rounded font-bold hover:bg-blue-100">
-                    Search
-                </button>
-            </form>
-
+            <SearchBar value={{city, setCity, getWeather}}/>
             {weatherData && weatherData.weather && (
                 <div className="bg-white/20 p-6 rounded-lg shadow-lg w-full max-w-md backdrop-blur-md">
                     <div className="flex justify-between items-center mb-4">
