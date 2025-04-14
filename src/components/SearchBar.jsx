@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toastinfo } from './Toast';
 
 const SearchBar = ({ value }) => {
     const { city, setCity, getWeather } = value;
@@ -6,18 +7,21 @@ const SearchBar = ({ value }) => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const searchCityName = async (input) => {
-        setCity(input); // Keep input in sync
-        if (input.length < 2) {
-            setResultCity([]);
-            setShowDropdown(false);
-            return;
-        }
+        try {
+            setCity(input); // Keep input in sync
+            if (input.length < 2) {
+                setResultCity([]);
+                setShowDropdown(false);
+                return;
+            }
 
-        const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${import.meta.env.VITE_API_KEY}`);
-        const data = await response.json();
-        console.log(data)
-        setResultCity(data);
-        setShowDropdown(true);
+            const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${import.meta.env.VITE_API_KEY}`);
+            const data = await response.json();
+            setResultCity(data);
+            setShowDropdown(true);
+        } catch (error) {
+            toastinfo(error.message)
+        }
     };
 
     const handleSelect = (selectedCity) => {
@@ -28,7 +32,7 @@ const SearchBar = ({ value }) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        getWeather() 
+        getWeather()
         // You can call your weather fetching function here
     };
 
@@ -44,7 +48,7 @@ const SearchBar = ({ value }) => {
                 />
                 <button
                     type="submit"
-                    onClick={(e)=>handleSearch(e)}
+                    onClick={(e) => handleSearch(e)}
                     className="bg-white text-blue-600 px-4 py-2 rounded font-bold hover:bg-blue-100"
                 >
                     Search
